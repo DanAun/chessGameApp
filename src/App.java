@@ -12,7 +12,7 @@ public class App extends Application{
     public void start(Stage primaryStage) throws Exception{
         final int SQUARE_SIZE = 50;
         Game chessGame = new Game(); // Create a new chess game
-        GridPane chessBoardGrid = chessGame.getBoard().DrawBoard(SQUARE_SIZE); // Draws the newly made chess board
+        GridPane chessBoardGrid = chessGame.getBoard().drawBoard(SQUARE_SIZE); // Draws the newly made chess board
         chessBoardGrid.setPadding(new Insets(20, 20, 20, 20));
         chessBoardGrid.layoutXProperty().bind(primaryStage.widthProperty().divide(2).subtract(4.6*SQUARE_SIZE));
         chessBoardGrid.layoutYProperty().bind(primaryStage.heightProperty().divide(2).subtract(4.6*SQUARE_SIZE));

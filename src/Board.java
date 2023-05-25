@@ -50,7 +50,7 @@ public class Board {
     }
     
     // Draws the board and returns it in a GridPane
-    public GridPane DrawBoard(int SquareSize){
+    public GridPane drawBoard(int SquareSize){
         GridPane chessBoardGrid = new GridPane();
         // Draws the board
         for(int i = 0; i < 8; i++){

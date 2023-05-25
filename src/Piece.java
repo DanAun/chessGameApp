@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-
 import javafx.scene.image.ImageView;
 
 public abstract class Piece {
@@ -25,7 +24,7 @@ public abstract class Piece {
         this.isAlive = isAlive;
     }
 
-    public void SetIsWhite(boolean isWhite){
+    public void setIsWhite(boolean isWhite){
         this.isWhite = isWhite;
     }
 
