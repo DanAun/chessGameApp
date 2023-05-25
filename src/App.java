@@ -1,6 +1,8 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -21,6 +23,16 @@ public class App extends Application{
         primaryStage.setScene(primaryScene);
         primaryStage.setTitle("Chess");
         primaryStage.show();
+    }
+
+    // Displays an alert box with the given message, title, and header
+    public static void infoBox(String infoMessage, String titleBar, String headerMessage)
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(titleBar);
+        alert.setHeaderText(headerMessage);
+        alert.setContentText(infoMessage);
+        alert.showAndWait();
     }
 
     public static void main(String[] args){

@@ -97,7 +97,8 @@ public class Square{
                 imageview.setSmooth(true);
                 this.getSquarePane().getChildren().add(imageview);
             } catch (FileNotFoundException e) {
-                System.out.println("File not found exception");
+                App.infoBox("The image was not found. The APP will now exit", "ERROR", null);
+                System.exit(1);
                 e.printStackTrace();
             }
         }
