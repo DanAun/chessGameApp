@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class Game {
@@ -75,109 +78,145 @@ public class Game {
         this.selected = selected;
     }
 
-    // Clears the selected square and sets the stroke back to its originial color
+    // Clears the selected square and removes the transparent green rectangle and circles
     public void clearSelected() {
-        if (selected.getIsWhite()) {
-            ((Rectangle) selected.getSquarePane().getChildren().get(0)).setStroke(Color.WHITE);
-        } else {
-            ((Rectangle) selected.getSquarePane().getChildren().get(0)).setStroke(Color.GRAY);
+        if (this.selected == null) {
+            return;
         }
-        this.selected = null;
+        // Removes the last index of the children arraylist, it should be the transparent green rectangle
+        selected.getSquarePane().getChildren().remove(selected.getSquarePane().getChildren().size() - 1);
+        for (Move move : legalMovesList(selected)) {
+            //Removes the last index of the children arraylist, it should be the transparent green circle
+            move.getEndSquare().getSquarePane().getChildren().remove(move.getEndSquare().getSquarePane().getChildren().size() - 1);
+        }
+        this.setSelected(null);
     }
 
     // Methods
 
-    // Checks if it's a legal chess move
+    // Checks if it's a legal chess move assuming the piece can normally make the move
     public boolean isLegalMove(Move move) {
         // If the end square is not empty and there is an ally piece on the end square
-        if (move.getPieceKilled() != null) {
-            if (move.getPlayer().getIsWhite() == move.getEndSquare().getPiece().getIsWhite()) {
-                return false;
-            }
-        }
-        // If the piece can legally make the move
-        if (!move.getStartSquare().getPiece().canMove(move)) {
+        if (move.getPieceKilled() != null
+                && (move.getPlayer().getIsWhite() == move.getEndSquare().getPiece().getIsWhite())) {
             return false;
         }
-        return true;
+        // If the piece jumped over a piece
+        if (move.getPieceMoved().jumpOverPiece(move)) { // 
+            return false;
+        }
         // TODO : Also check if the move puts the player in check
+
+        // If none of these are true then it's a legal move
+        return true;
+    }
+
+    // Returns list of all squares that the piece on a square can normally go to
+       public ArrayList<Square> canMoveList(Square square){
+            ArrayList<Square> allSquaresList = new ArrayList<Square>();
+            Player thePlayer = isWhiteTurn ? getWhitePlayer() : getBlackPlayer();
+            // Scan thr whole board to see what squares the piece can go to
+            for (int i = 0; i < board.getBoard().length; i++) {
+                for (int j = 0; j < board.getBoard().length; j++) {
+                    if (square.getPiece().canMove(new Move(thePlayer, square, board.getSquare(i, j)))) {
+                        allSquaresList.add(board.getSquare(i, j));
+                    }
+                }
+            }
+            return allSquaresList;
+       }
+
+    // Returns a list with all the moves that would constitute a legall move from a specific square
+    public ArrayList<Move> legalMovesList(Square square){
+        ArrayList<Move> legalMovesList = new ArrayList<Move>();
+        Player thePlayer = isWhiteTurn ? getWhitePlayer() : getBlackPlayer();
+        for (Square endSquare : canMoveList(square)) {
+            Move move = new Move(thePlayer, square, endSquare);
+            if (isLegalMove(move)) {
+                legalMovesList.add(move);
+            }
+        }
+        return legalMovesList;
     }
 
     // Makes the chess move assuming it's legal
     public void makeMove(Move move) {
+        this.clearSelected();
         move.getStartSquare().setPiece(null);
         move.getEndSquare().setPiece(move.getPieceMoved());
         if (move.getPieceMoved() instanceof Pawn) {
             ((Pawn) move.getPieceMoved()).setHasMoved(true);
         }
-
-        this.clearSelected();
         this.setIsWhiteTurn(isWhiteTurn ? false : true); // Switches the turn
+    }
+
+    // Updates the selected square and colors the board to show the selected square
+    // and the legall moves
+    public void updateSelected(Square square) {
+        // Selects the square and creates a rectangle with a transparent green color and
+        // places it on top of the square
+        clearSelected();
+        setSelected(square);
+        Rectangle rect = new Rectangle(selected.getSQUARE_SIZE(), selected.getSQUARE_SIZE());
+        Color color = new Color(0, 0.3, 0.13, 0.3);
+        rect.setFill(color);
+        rect.setStroke(color);
+        selected.getSquarePane().getChildren().add(rect);
+
+        // Creates a small circle inside all the square the piece can move too
+        // if the move is a capture creates a green stroke around the square
+        for (Move move : legalMovesList(square)) {
+            // Move is not a capture
+            if (move.getPieceKilled() == null) {
+
+                Circle circle = new Circle(selected.getSQUARE_SIZE()/8);
+                circle.setFill(color);
+                circle.setStroke(color);
+                move.getEndSquare().getSquarePane().getChildren().add(circle);
+            }
+            // Move is a capture
+            else {
+                // Contours the endsquare in green
+                Rectangle rect2 = new Rectangle(selected.getSQUARE_SIZE(), selected.getSQUARE_SIZE());
+                rect2.setStroke(new Color(0, 0.3, 0.13, 1));
+                rect2.setFill(new Color(0, 0, 0, 0));
+                move.getEndSquare().getSquarePane().getChildren().add(rect2);
+            }
+        }
     }
 
     // Class that handles the click of a square on the board
     class ClickSquareHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent event) {
-            // If no square is already selected
+            Square candidatSquare = board.getSquare(((CustomStackPane) event.getSource()).getX(),
+                    ((CustomStackPane) event.getSource()).getY());
+            // No squares are selected
             if (selected == null) {
-                selected = board.getSquare(((CustomStackPane) event.getSource()).getX(),
-                        ((CustomStackPane) event.getSource()).getY());
-                // If clicked on an empty square
-                if (selected.getPiece() == null) {
-                    selected = null;
-                }
-                // If it is white's turn and the piece on the selected square is white
-                else if (isWhiteTurn && selected.getPiece().getIsWhite()) {
-                    // Set the stroke of the square to red
-                    ((Rectangle) selected.getSquarePane().getChildren().get(0)).setStroke(Color.RED);
-                }
-                // If it is black's turn and the piece on the selected square is black
-                else if (!isWhiteTurn && !(selected.getPiece().getIsWhite())) {
-                    // Set the stroke of the square to red
-                    ((Rectangle) selected.getSquarePane().getChildren().get(0)).setStroke(Color.RED);
-                }
-                // If clicked on a square of a piece of the opposite color
-                else {
-                    selected = null;
+                // CandidateSquare has piece owned by the player
+                if (candidatSquare.getPiece() != null && isWhiteTurn == candidatSquare.getPiece().getIsWhite()) {
+                    updateSelected(candidatSquare);
                 }
             }
-            // If a square is already selected
+            // A square was already selected
             else {
-                // If the square is the same as the already selected square
-                if (selected == board.getSquare(((CustomStackPane) event.getSource()).getX(),
-                        ((CustomStackPane) event.getSource()).getY())) {
-                    // If the square is white sets the stroke back to white
-                    if (selected.getIsWhite()) {
-                        ((Rectangle) selected.getSquarePane().getChildren().get(0)).setStroke(Color.WHITE);
-                    }
-                    // If the square is black sets the stroke back to gray
-                    else {
-                        ((Rectangle) selected.getSquarePane().getChildren().get(0)).setStroke(Color.GRAY);
-                    }
-                    selected = null;
+                // CandidateSquare is equal to selected
+                if (candidatSquare.equals(selected)) {
+                    clearSelected();
                 }
-                // If the square is not the same as the already selected square
+                // CandidateSquare has piece owned by the player
+                else if (candidatSquare.getPiece() != null && isWhiteTurn == candidatSquare.getPiece().getIsWhite()) {
+                    updateSelected(candidatSquare);
+                }
+
+                // Tries to make the move if its legal
                 else {
-                    // If it is white's turn
-                    if (isWhiteTurn && selected.getPiece().getIsWhite()) {
-                        // Registeres the move
-                        Move move = new Move(whitePlayer, selected,
-                                board.getSquare(((CustomStackPane) event.getSource()).getX(),
-                                        ((CustomStackPane) event.getSource()).getY()));
-                        if (isLegalMove(move)) {
-                            makeMove(move);
-                        }
-                    }
-                    // If it is black's turn
-                    else if (!isWhiteTurn) {
-                        // Registeres the move
-                        Move move = new Move(blackPlayer, selected,
-                                board.getSquare(((CustomStackPane) event.getSource()).getX(),
-                                        ((CustomStackPane) event.getSource()).getY()));
-                        if (isLegalMove(move)) {
-                            makeMove(move);
-                        }
+                    Player thePlayer = isWhiteTurn ? whitePlayer : blackPlayer;
+                    Move move = new Move(thePlayer, selected, candidatSquare);
+                    // If the move is included in legalMovesList
+
+                    if (legalMovesList(selected).contains(move)) {
+                        makeMove(move);
                     }
                 }
             }

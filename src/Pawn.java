@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -39,10 +41,6 @@ public class Pawn extends Piece {
 
     @Override
     public boolean canMove(Move move) {
-        // If it didnt move through a piece
-        if (movedThroughPiece(move)) {
-            return false;
-        }
         // If white pawn
         if (getIsWhite()) {
             // If pawn moves 1 square forward
@@ -88,7 +86,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean movedThroughPiece(Move move) {
+    public boolean jumpOverPiece(Move move) {
         // TODO : Implement this method
         return false;
     }

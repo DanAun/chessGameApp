@@ -1,4 +1,6 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 import javafx.scene.image.ImageView;
 
 public abstract class Piece {
@@ -33,7 +35,7 @@ public abstract class Piece {
     // Returns the imageView of the piece
     public abstract ImageView DrawPiece() throws FileNotFoundException;
 
-    public abstract boolean canMove(Move move); // whether the piece can make the given move
+    public abstract boolean canMove(Move move); // Whether the move can normally be made by the piece
 
-    public abstract boolean movedThroughPiece(Move move); // whether the piece moved through another piece
+    public abstract boolean jumpOverPiece(Move move); // whether the piece jumped over another piece
 }

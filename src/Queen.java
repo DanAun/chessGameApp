@@ -28,7 +28,7 @@ public class Queen extends Piece {
     @Override
     public boolean canMove(Move move) {
         // If it does not move through a piece
-        if (!(move.getPieceMoved().movedThroughPiece(move))) {
+        if (!(move.getPieceMoved().jumpOverPiece(move))) {
             // If the move is diagonal
             if (Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == Math
                     .abs(move.getStartSquare().getY() - move.getEndSquare().getY())) {
@@ -45,7 +45,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean movedThroughPiece(Move move) {
+    public boolean jumpOverPiece(Move move) {
         // TODO : Implement this method
         return false;
     }

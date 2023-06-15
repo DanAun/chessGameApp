@@ -6,7 +6,7 @@ public class Move {
     private Piece pieceKilled; // the piece that was killed
 
     // Constructor
-    public Move(Player player, Square startSquare, Square endSquare){
+    public Move(Player player, Square startSquare, Square endSquare) {
         this.player = player;
         this.startSquare = startSquare;
         this.endSquare = endSquare;
@@ -15,19 +15,33 @@ public class Move {
     }
 
     // Getters
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
-    public Square getStartSquare(){
+
+    public Square getStartSquare() {
         return startSquare;
     }
-    public Square getEndSquare(){
+
+    public Square getEndSquare() {
         return endSquare;
     }
-    public Piece getPieceMoved(){
+
+    public Piece getPieceMoved() {
         return pieceMoved;
     }
-    public Piece getPieceKilled(){
+
+    public Piece getPieceKilled() {
         return pieceKilled;
+    }
+
+    // Methods
+
+    // A move is said equal if the start and end square are the same and the moved
+    // piece is the same and moved by the same player
+    @Override
+    public boolean equals(Object move) {
+        return move instanceof Move && ((Move) move).getStartSquare().equals(this.getStartSquare())
+                && ((Move) move).getEndSquare().equals(this.getEndSquare());
     }
 }

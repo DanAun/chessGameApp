@@ -27,7 +27,7 @@ public class King extends Piece{
     @Override
     public boolean canMove(Move move) {
         // If the move was not through a piece
-        if(!(move.getPieceMoved().movedThroughPiece(move))){
+        if(!(move.getPieceMoved().jumpOverPiece(move))){
             // If the move was by 1 square in any direction
             if(Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) <= 1
                 && Math.abs(move.getStartSquare().getY() - move.getEndSquare().getY()) <= 1){
@@ -41,7 +41,7 @@ public class King extends Piece{
     }
 
     @Override
-    public boolean movedThroughPiece(Move move) {
+    public boolean jumpOverPiece(Move move) {
         // The king is unable to move through pieces
         return false;
     }

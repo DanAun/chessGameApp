@@ -28,7 +28,7 @@ public class Rook extends Piece {
     @Override
     public boolean canMove(Move move) {
         // If the move was not through a piece
-        if(!(move.getPieceMoved().movedThroughPiece(move))){
+        if(!(move.getPieceMoved().jumpOverPiece(move))){
             // If the move was horizontal or vertical
             if(move.getStartSquare().getX() == move.getEndSquare().getX() 
                 || move.getStartSquare().getY() == move.getEndSquare().getY()){
@@ -39,7 +39,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean movedThroughPiece(Move move) {
+    public boolean jumpOverPiece(Move move) {
         // TODO : Implement this method
         return false;
     }

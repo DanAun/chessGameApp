@@ -9,15 +9,15 @@ public class Square{
     private int x; // x coordinate of the sqaure
     private int y; // y coordinate of the square
     private boolean isWhite; // whether the square is white or black
-    private Piece piece; // the piece on the square
+    private Piece piece; // the piece on the square, is null if there is no piece
     private CustomStackPane squarePane; // the pane of the square
+    private final int SQUARE_SIZE = 50; // the size of the square
 
     // Constructor
 
     // Creates a square with the given coordinates, piece, and size. Then creates
     // the square stackpane and stores in squarePane
     public Square(int x, int y, Piece piece) {
-        final int SQUARE_SIZE = 50;
         this.x = x;
         this.y = y;
         this.piece = piece;
@@ -71,6 +71,10 @@ public class Square{
         return squarePane;
     }
 
+    public int getSQUARE_SIZE() {
+        return SQUARE_SIZE;
+    }
+
     // Setters
 
     public void setPiece(Piece piece) {
@@ -80,6 +84,11 @@ public class Square{
 
     // Methods
 
+    // Two squares are said equal if they have the same coordinates
+    @Override
+    public boolean equals(Object square){
+        return square instanceof Square && ((Square) square).getX() == this.getX() && ((Square) square).getY() == this.getY();
+    }
     // Updates the image of the piece on the square
     public void updatePieceImage() {
         // If there is a piece on the square
