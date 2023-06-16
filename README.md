@@ -1,5 +1,5 @@
 ## Chess Game Implementation Version 1.2
-NOTE: THE GAME STILL HAS A LOT OF LACKINGS.
+NOTE: The game still has lackings. See lacking features section for details.
 
 This basic chess game implements a simple chess board.
 
