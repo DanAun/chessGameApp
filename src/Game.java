@@ -102,7 +102,7 @@ public class Game {
             return false;
         }
         // If the piece jumped over a piece
-        if (move.getPieceMoved().jumpOverPiece(move)) { // 
+        if (move.getPieceMoved().jumpedOverPiece(this.getBoard(), move)) { // 
             return false;
         }
         // TODO : Also check if the move puts the player in check
@@ -126,7 +126,7 @@ public class Game {
             return allSquaresList;
        }
 
-    // Returns a list with all the moves that would constitute a legall move from a specific square
+    // Returns a list with all the moves that would constitute a legal move from a specific square
     public ArrayList<Move> legalMovesList(Square square){
         ArrayList<Move> legalMovesList = new ArrayList<Move>();
         Player thePlayer = isWhiteTurn ? getWhitePlayer() : getBlackPlayer();

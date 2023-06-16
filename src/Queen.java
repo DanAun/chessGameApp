@@ -27,26 +27,54 @@ public class Queen extends Piece {
 
     @Override
     public boolean canMove(Move move) {
-        // If it does not move through a piece
-        if (!(move.getPieceMoved().jumpOverPiece(move))) {
-            // If the move is diagonal
-            if (Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == Math
-                    .abs(move.getStartSquare().getY() - move.getEndSquare().getY())) {
-                return true;
-            }
-            // If the move is horizontal or vertical
-            if (move.getStartSquare().getX() == move.getEndSquare().getX()
-                    || move.getStartSquare().getY() == move.getEndSquare().getY()) {
-                return true;
-            }
+        // If the move is diagonal
+        if (Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == Math
+                .abs(move.getStartSquare().getY() - move.getEndSquare().getY())) {
+            return true;
+        }
+        // If the move is horizontal or vertical
+        if (move.getStartSquare().getX() == move.getEndSquare().getX()
+                || move.getStartSquare().getY() == move.getEndSquare().getY()) {
+            return true;
         }
         // If the move is not diagonal, horizontal, or vertical
         return false;
     }
 
     @Override
-    public boolean jumpOverPiece(Move move) {
-        // TODO : Implement this method
+    public boolean jumpedOverPiece(Board board, Move move) {
+        // For all the squares between the start and end squares if there is a piece
+        // there then the queen jumped over a piece
+        int xDirection = move.getEndSquare().getX() - move.getStartSquare().getX() > 0 ? 1 : -1;
+        int yDirection = move.getEndSquare().getY() - move.getStartSquare().getY() > 0 ? 1 : -1;
+        // If the move is diagonal
+        if (Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == Math
+                .abs(move.getStartSquare().getY() - move.getEndSquare().getY())) {
+            for (int i = 1; i < Math.abs(move.getEndSquare().getX() - move.getStartSquare().getX()); i++) {
+                if (board.getSquare(move.getStartSquare().getX() + i * xDirection,
+                        move.getStartSquare().getY() + i * yDirection).getPiece() != null) {
+                    return true;
+                }
+            }
+        }
+        // If the move is vertical
+        if (move.getStartSquare().getX() == move.getEndSquare().getX()) {
+            for (int i = 1; i < Math.abs(move.getEndSquare().getY() - move.getStartSquare().getY()); i++) {
+                if (board.getSquare(move.getStartSquare().getX(),
+                        move.getStartSquare().getY() + i * yDirection).getPiece() != null) {
+                    return true;
+                }
+            }
+        }
+        // If the move is horizontal
+        if (move.getStartSquare().getY() == move.getEndSquare().getY()) {
+            for (int i = 1; i < Math.abs(move.getEndSquare().getX() - move.getStartSquare().getX()); i++) {
+                if (board.getSquare(move.getStartSquare().getX() + i * xDirection,
+                        move.getStartSquare().getY()).getPiece() != null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

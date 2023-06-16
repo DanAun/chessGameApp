@@ -37,5 +37,5 @@ public abstract class Piece {
 
     public abstract boolean canMove(Move move); // Whether the move can normally be made by the piece
 
-    public abstract boolean jumpOverPiece(Move move); // whether the piece jumped over another piece
+    public abstract boolean jumpedOverPiece(Board board, Move move); // whether the piece jumped over another piece
 }

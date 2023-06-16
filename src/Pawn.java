@@ -7,16 +7,22 @@ import javafx.scene.image.ImageView;
 
 public class Pawn extends Piece {
     private boolean hasMoved; // whether the pawn has moved or not
+    private int forwardDirection; // Positive direction is down, negative direction is up
     // Constructor
 
     public Pawn(boolean isWhite) {
         super(isWhite);
         this.hasMoved = false;
+        this.forwardDirection = isWhite ? -1 : 1;
     }
 
     // Getters
     public boolean getHasMoved() {
         return hasMoved;
+    }
+
+    public int getForwardDirection() {
+        return forwardDirection;
     }
 
     // Setters
@@ -41,53 +47,42 @@ public class Pawn extends Piece {
 
     @Override
     public boolean canMove(Move move) {
-        // If white pawn
-        if (getIsWhite()) {
-            // If pawn moves 1 square forward
-            if (move.getStartSquare().getX() == move.getEndSquare().getX()
-                    && move.getStartSquare().getY() - move.getEndSquare().getY() == 1) {
-                return true;
-            }
-            // If has not moved before and moves 2 squares forward
-            if (!(hasMoved) && move.getStartSquare().getX() == move.getEndSquare().getX()
-                    && move.getStartSquare().getY() - move.getEndSquare().getY() == 2) {
-                return true;
-            }
-            // If pawn moves 1 square diagonally forward and captures a piece
-            if ((move.getPieceKilled() != null) && Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == 1
-                    && move.getStartSquare().getY() - move.getEndSquare().getY() == 1) {
-                return true;
-            }
-            // TODO: Implement en passant
-            // TODO: Implement promotion
+        // Positive direction is down, negative direction is up
+        // If pawn moves 1 square forward and doesn't capture a piece
+        if (move.getStartSquare().getX() == move.getEndSquare().getX()
+                && move.getEndSquare().getY() - move.getStartSquare().getY() == 1 * getForwardDirection()
+                && move.getPieceKilled() == null) {
+            return true;
         }
-        // If black pawn
-        else {
-            // If pawn moves 1 square forward
-            if (move.getStartSquare().getX() == move.getEndSquare().getX()
-                    && move.getStartSquare().getY() - move.getEndSquare().getY() == -1) {
-                return true;
-            }
-            // If has not moved before and moves 2 squares forward
-            if (!(hasMoved) && move.getStartSquare().getX() == move.getEndSquare().getX()
-                    && move.getStartSquare().getY() - move.getEndSquare().getY() == -2) {
-                return true;
-            }
-            // If pawn moves 1 square diagonally forward and captures a piece
-            if ((move.getPieceKilled() != null) && Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == 1
-                    && move.getStartSquare().getY() - move.getEndSquare().getY() == -1) {
-                return true;
-            }
-            // TODO: Implement en passant
-            // TODO: Implement promotion
+        // If has not moved before and moves 2 squares forward and doesn't capture a piece
+        if (!(hasMoved) && move.getStartSquare().getX() == move.getEndSquare().getX()
+                && move.getEndSquare().getY() - move.getStartSquare().getY() == 2 * getForwardDirection()
+                && move.getPieceKilled() == null) {
+            return true;
         }
+        // If pawn moves 1 square diagonally forward and captures a piece
+        if ((move.getPieceKilled() != null)
+                && Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == 1
+                && move.getEndSquare().getY() - move.getStartSquare().getY() == 1 * getForwardDirection()) {
+            return true;
+        }
+        // TODO: Implement en passant
+        // TODO: Implement promotion
 
         return false;
     }
 
     @Override
-    public boolean jumpOverPiece(Move move) {
-        // TODO : Implement this method
+    public boolean jumpedOverPiece(Board board, Move move) {
+        // Only case a pawn could have jumped over a piece is when it moved 2 squares forward on its first turn
+        // If moved 2 squares
+        if (move.getStartSquare().getX() == move.getEndSquare().getX()
+                && Math.abs(move.getEndSquare().getY() - move.getStartSquare().getY()) == 2){
+            // If the square in between is not empty
+            if (board.getSquare(move.getStartSquare().getX(), move.getStartSquare().getY() + 1*getForwardDirection()).getPiece() != null){
+                return true;
+            }
+        }
         return false;
     }
 }

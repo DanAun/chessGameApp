@@ -1,18 +1,17 @@
-## Chess Game Implementation Version 1.1
+## Chess Game Implementation Version 1.2
 NOTE: THE GAME STILL HAS A LOT OF LACKINGS.
 
 This basic chess game implements a simple chess board.
 
-## New in Version 1.1
-    - Now shows possible legal moves when a piece is selected
-    - Fixed some bugs
+## New in Version 1.2
+    - Updated to jdk-17.0.7 and javafx-sdk-17.0.7
+    - Fixed a bug where pawn could walk straight forward and capture a piece
+    - Implemented piece collision, so pieces can't walk through each other
 
 ## Features
     - Shows possible legal moves when a piece is selected
-    - It makes sure the game is played sequentially (starting with white).
-    - Forces pieces to move legally (some things not yet implemented see section on missing features under).
-    - Implements pawn capture
-    - Implements possiblility of moving 2 squares on first move of a pawn
+    - It makes sure the game is played sequentially
+    - Forces pieces to move legally
 
 ## Lacking Features
     - Does not implement en passant
@@ -21,7 +20,6 @@ This basic chess game implements a simple chess board.
     - Does not implement stalemate
     - Does not implement checks
     - Does not implement checkmate
-    - Pieces are ghosts (they are able to move through other pieces)
 
 ## Folder Structure
 

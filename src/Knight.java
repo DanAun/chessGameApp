@@ -34,7 +34,7 @@ public class Knight extends Piece{
         }
 
         @Override
-        public boolean jumpOverPiece(Move move) {
+        public boolean jumpedOverPiece(Board board, Move move) {
             // The knight is the only piece that is allowed to always jump over pieces
             return false;
         }       
