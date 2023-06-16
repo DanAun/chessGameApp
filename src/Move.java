@@ -4,6 +4,7 @@ public class Move {
     private Square endSquare; // the square the piece ended on
     private Piece pieceMoved; // the piece that was moved
     private Piece pieceKilled; // the piece that was killed
+    private Boolean isEnPassant; // whether the move was an en passant move
 
     // Constructor
     public Move(Player player, Square startSquare, Square endSquare) {
@@ -12,6 +13,7 @@ public class Move {
         this.endSquare = endSquare;
         this.pieceMoved = startSquare.getPiece();
         this.pieceKilled = endSquare.getPiece(); // if no piece was killed, this will be null
+        this.isEnPassant = false;
     }
 
     // Getters
@@ -33,6 +35,19 @@ public class Move {
 
     public Piece getPieceKilled() {
         return pieceKilled;
+    }
+
+    public Boolean getIsEnPassant() {
+        return isEnPassant;
+    }
+
+    // Setters
+    public void setIsEnPassant() {
+        this.isEnPassant = true;
+    }
+
+    public void setPieceKilled(Piece piece) {
+        this.pieceKilled = piece;
     }
 
     // Methods

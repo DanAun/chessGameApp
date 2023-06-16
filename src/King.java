@@ -25,7 +25,7 @@ public class King extends Piece {
     }
 
     @Override
-    public boolean canMove(Move move) {
+    public boolean canMove(Game game, Move move) {
         // If the move was by 1 square in any direction
         if (Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) <= 1
                 && Math.abs(move.getStartSquare().getY() - move.getEndSquare().getY()) <= 1) {

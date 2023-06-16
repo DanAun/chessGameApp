@@ -26,7 +26,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean canMove(Move move) {
+    public boolean canMove(Game game, Move move) {
         // If the move was horizontal or vertical
         if (move.getStartSquare().getX() == move.getEndSquare().getX()
                 || move.getStartSquare().getY() == move.getEndSquare().getY()) {

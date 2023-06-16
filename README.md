@@ -1,20 +1,19 @@
-## Chess Game Implementation Version 1.2
+## Chess Game Implementation Version 1.3
 NOTE: The game still has lackings. See lacking features section for details.
 
-This basic chess game implements a simple chess board.
+This basic chess game implements a simple chess game.
+Implemented in using jdk-17.0.7 and javafx-sdk-17.0.7
 
-## New in Version 1.2
-    - Updated to jdk-17.0.7 and javafx-sdk-17.0.7
-    - Fixed a bug where pawn could walk straight forward and capture a piece
-    - Implemented piece collision, so pieces can't walk through each other
+## New in Version 1.3
+    - Implemented en passant
 
 ## Features
+    - Implements en passant
     - Shows possible legal moves when a piece is selected
     - It makes sure the game is played sequentially
     - Forces pieces to move legally
 
 ## Lacking Features
-    - Does not implement en passant
     - Does not implement castling
     - Does not implement promotion
     - Does not implement stalemate

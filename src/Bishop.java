@@ -26,7 +26,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean canMove(Move move) {
+    public boolean canMove(Game game, Move move) {
         // If the move is diagonal
         if (Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX()) == Math
                 .abs(move.getStartSquare().getY() - move.getEndSquare().getY())) {

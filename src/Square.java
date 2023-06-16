@@ -91,15 +91,15 @@ public class Square{
     }
     // Updates the image of the piece on the square
     public void updatePieceImage() {
-        // If there is a piece on the square
-        for (int i = 1; i < this.getSquarePane().getChildren().size(); i++) {
-            this.getSquarePane().getChildren().remove(this.getSquarePane().getChildren().get(1));
+        // If there is an image of a piece on the square then removes it
+        if (this.getSquarePane().getChildren().size() > 1) {
+            this.getSquarePane().getChildren().remove(this.getSquarePane().getChildren().size() - 1);
         }
-        if (piece != null) {
+        if (getPiece() != null) {
             // Creates an imageview of the piece
             ImageView imageview = new ImageView();
             try {
-                imageview = piece.DrawPiece();
+                imageview = getPiece().DrawPiece();
                 imageview.setFitHeight(50);
                 imageview.setFitWidth(50);
                 imageview.setPreserveRatio(true);

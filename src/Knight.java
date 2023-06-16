@@ -26,7 +26,7 @@ public class Knight extends Piece{
         }
 
         @Override
-        public boolean canMove(Move move) {
+        public boolean canMove(Game game, Move move) {
             // It is a legal knight move if the x and y distances are 1 and 2
             int x = Math.abs(move.getStartSquare().getX() - move.getEndSquare().getX());
             int y = Math.abs(move.getStartSquare().getY() - move.getEndSquare().getY());
